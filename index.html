@@ -2,66 +2,120 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>WhatsApp Contact Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Me on WhatsApp</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: sans-serif;
-      background: #f5f5f5;
-      padding: 2rem;
-      text-align: center;
+      font-family: 'Inter', sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
-    form {
-      background: #fff;
+    .container {
+      background-color: #fff;
       padding: 2rem;
-      border-radius: 10px;
-      max-width: 400px;
-      margin: auto;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-    input, textarea, button {
+      border-radius: 1rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
       width: 100%;
-      margin-top: 1rem;
-      padding: 0.8rem;
-      font-size: 1rem;
-      border: 1px solid #ccc;
+      max-width: 500px;
+    }
+    h2 {
+      text-align: center;
+      color: #00aa88;
+      margin-bottom: 1.5rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-weight: 600;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1.25rem;
       border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
     }
     button {
-      background: #25D366;
-      color: white;
-      font-weight: bold;
+      background-color: #00aa88;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
       border: none;
+      border-radius: 8px;
+      font-size: 1rem;
       cursor: pointer;
+      width: 100%;
     }
     button:hover {
-      background: #1ebc59;
+      background-color: #008f73;
+    }
+    .success-message {
+      display: none;
+      text-align: center;
+      color: #4caf50;
+      margin-top: 1rem;
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <h2>Start a WhatsApp Chat</h2>
+    <form id="whatsappForm">
+      <label for="name">Your Name</label>
+      <input type="text" id="name" required />
 
-  <h2>Send Me a WhatsApp Message</h2>
+      <label for="email">Email</label>
+      <input type="email" id="email" required />
 
-  <form id="whatsapp-form">
-    <input type="text" id="name" placeholder="Your Name" required />
-    <textarea id="message" placeholder="Your Message" rows="4" required></textarea>
-    <button type="submit">Send via WhatsApp</button>
-  </form>
+      <label for="service">What do you need?</label>
+      <select id="service" required>
+        <option value="">Select a service</option>
+        <option value="One-page Website">One-page Website</option>
+        <option value="Bug Fix">Bug Fix</option>
+        <option value="Site Redesign">Site Redesign</option>
+      </select>
+
+      <label for="budget">Your Budget (₦)</label>
+      <input type="number" id="budget" placeholder="e.g. 20000" required />
+
+      <label for="message">Message</label>
+      <textarea id="message" rows="4" required></textarea>
+
+      <button type="submit">Send via WhatsApp</button>
+      <div class="success-message" id="successMessage">Redirecting to WhatsApp...</div>
+    </form>
+  </div>
 
   <script>
-    document.getElementById('whatsapp-form').addEventListener('submit', function(e) {
+    document.getElementById('whatsappForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const message = document.getElementById('message').value.trim();
-      const number = '2349132142377'; // your number
 
-      if (name && message) {
-        const url = `https://wa.me/${number}?text=Hi, I'm ${encodeURIComponent(name)}. ${encodeURIComponent(message)}`;
-        window.open(url, '_blank');
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const service = document.getElementById('service').value;
+      const budget = document.getElementById('budget').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      if (!name || !email || !service || !budget || !message) {
+        alert('Please fill in all fields.');
+        return;
       }
+
+      const fullMessage = `Name: ${name}%0AEmail: ${email}%0AService: ${service}%0ABudget: ₦${budget}%0AMessage: ${message}`;
+      const whatsappNumber = '2349132142377';
+      const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(fullMessage)}`;
+
+      document.getElementById('successMessage').style.display = 'block';
+      setTimeout(() => {
+        window.open(whatsappURL, '_blank');
+      }, 800);
     });
   </script>
-
 </body>
 </html>
